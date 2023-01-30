@@ -147,14 +147,12 @@ function App() {
     const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, {})
   // dispatch({type: ACTIONS.ADD_DIGIT, payload: {digit: 1}})
   return (
-    <div className="App">
+    <div className="calculator-grid">
       <header> <script src="https://cdn.tailwindcss.com"></script> </header>
-      <div className = "calculator-grid">
         <div className = "output">
           <div className = "previous-operand">{formatOperand(previousOperand)} {operation}</div>
           <div className = "current-operand">{formatOperand(currentOperand)}</div>
         </div>
-      </div>
       <button className = "span-two" onClick={() => dispatch({ type: ACTIONS.CLEAR})}>AC</button>
       <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT})}>DEL</button>
       <OperationBUTTON operation="/" dispatch={dispatch} />
