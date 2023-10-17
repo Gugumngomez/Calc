@@ -17,10 +17,10 @@ export const ACTIONS = {
   EVALUATE: 'evaluate'
 }
 
-function reducer (state, {type, payload}) {
-  switch(type) {
-    default: 
-    break
+function reducer(state, { type, payload }) {
+  switch (type) {
+    default:
+      break
 
     case ACTIONS.ADD_DIGIT:
       if (state.overwrite) {
@@ -30,9 +30,9 @@ function reducer (state, {type, payload}) {
           overwrite: false,
         }
       }
-      if (payload.digit === "0" && state.currentOperand === "0"){
+      if (payload.digit === "0" && state.currentOperand === "0") {
         return state
-      } 
+      }
       if (payload.digit === "." && state.currentOperand.includes(".")) {
         return state
       }
@@ -45,7 +45,7 @@ function reducer (state, {type, payload}) {
         return state
       }
 
-      if (state.currentOperand == null ) {
+      if (state.currentOperand == null) {
         return {
           ...state,
           operation: payload.operation,
@@ -67,7 +67,7 @@ function reducer (state, {type, payload}) {
         currentOperand: null,
       }
     case ACTIONS.CLEAR:
-        return{}
+      return {}
 
     case ACTIONS.DELETE_DIGIT:
       if (state.overwrite) {
@@ -91,11 +91,11 @@ function reducer (state, {type, payload}) {
 
     case ACTIONS.EVALUATE:
       if (
-        state.operation == null || 
-        state.currentOperand == null || 
+        state.operation == null ||
+        state.currentOperand == null ||
         state.previousOperand == null
-        ) {
-          return state
+      ) {
+        return state
       }
       return {
         ...state,
@@ -107,7 +107,7 @@ function reducer (state, {type, payload}) {
   }
 }
 
-function evaluate({currentOperand, previousOperand, operation}) {
+function evaluate({ currentOperand, previousOperand, operation }) {
   const previous = parseFloat(previousOperand)
   const current = parseFloat(currentOperand)
   if (isNaN(previous) || isNaN(current)) return ""
@@ -126,7 +126,7 @@ function evaluate({currentOperand, previousOperand, operation}) {
       computation = previous * current
       break
     default:
-      
+
   }
   return computation.toString()
 }
@@ -136,7 +136,7 @@ const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
 })
 
 function formatOperand(operand) {
-  if (operand == null) return 
+  if (operand == null) return
   const [integer, decimal] = operand.split(".")
   if (decimal == null) return INTEGER_FORMATTER.format(integer)
   return `${INTEGER_FORMATTER.format(integer)}.${decimal}`
@@ -144,33 +144,35 @@ function formatOperand(operand) {
 
 
 function App() {
-    const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, {})
+  const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(reducer, {})
   // dispatch({type: ACTIONS.ADD_DIGIT, payload: {digit: 1}})
   return (
-    <div className="calculator-grid">
-      <header> <script src="https://cdn.tailwindcss.com"></script> </header>
-        <div className = "output">
-          <div className = "previous-operand">{formatOperand(previousOperand)} {operation}</div>
-          <div className = "current-operand">{formatOperand(currentOperand)}</div>
+    <div className='calculator-container'>
+      <div className="calculator-grid">
+        <header> <script src="https://cdn.tailwindcss.com"></script> </header>
+        <div className="output">
+          <div className="previous-operand">{formatOperand(previousOperand)} {operation}</div>
+          <div className="current-operand">{formatOperand(currentOperand)}</div>
         </div>
-      <button className = "span-two" onClick={() => dispatch({ type: ACTIONS.CLEAR})}>AC</button>
-      <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT})}>DEL</button>
-      <OperationBUTTON operation="/" dispatch={dispatch} />
-      <DIGITBUTTON digit="1" dispatch={dispatch} />
-      <DIGITBUTTON digit="2" dispatch={dispatch} />
-      <DIGITBUTTON digit="3" dispatch={dispatch} />
-      <OperationBUTTON operation="*" dispatch={dispatch} />
-      <DIGITBUTTON digit="4" dispatch={dispatch} />
-      <DIGITBUTTON digit="5" dispatch={dispatch} />
-      <DIGITBUTTON digit="6" dispatch={dispatch} />
-      <OperationBUTTON operation="+" dispatch={dispatch} />
-      <DIGITBUTTON digit="7" dispatch={dispatch} />
-      <DIGITBUTTON digit="8" dispatch={dispatch} />
-      <DIGITBUTTON digit="9" dispatch={dispatch} />
-      <OperationBUTTON operation="-" dispatch={dispatch} />
-      <DIGITBUTTON digit="." dispatch={dispatch} />
-      <DIGITBUTTON digit="0" dispatch={dispatch} />
-      <button className= "span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE})}>=</button>
+        <button className="span-two" onClick={() => dispatch({ type: ACTIONS.CLEAR })}>AC</button>
+        <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>DEL</button>
+        <OperationBUTTON operation="/" dispatch={dispatch} />
+        <DIGITBUTTON digit="1" dispatch={dispatch} />
+        <DIGITBUTTON digit="2" dispatch={dispatch} />
+        <DIGITBUTTON digit="3" dispatch={dispatch} />
+        <OperationBUTTON operation="*" dispatch={dispatch} />
+        <DIGITBUTTON digit="4" dispatch={dispatch} />
+        <DIGITBUTTON digit="5" dispatch={dispatch} />
+        <DIGITBUTTON digit="6" dispatch={dispatch} />
+        <OperationBUTTON operation="+" dispatch={dispatch} />
+        <DIGITBUTTON digit="7" dispatch={dispatch} />
+        <DIGITBUTTON digit="8" dispatch={dispatch} />
+        <DIGITBUTTON digit="9" dispatch={dispatch} />
+        <OperationBUTTON operation="-" dispatch={dispatch} />
+        <DIGITBUTTON digit="." dispatch={dispatch} />
+        <DIGITBUTTON digit="0" dispatch={dispatch} />
+        <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
+      </div>
     </div>
   );
 }
